@@ -2,7 +2,7 @@
 
 // 🟢 학습 시작 기록 처리
 document.getElementById('study-form').addEventListener('submit', function (e) {
-  e.preventDefault(); // 새로고침 방지
+  e.preventDefault();
 
   const subject = document.getElementById('subject').value;
   const book = document.getElementById('book').value;
@@ -20,7 +20,6 @@ document.getElementById('study-form').addEventListener('submit', function (e) {
   };
 
   fetch('https://script.google.com/macros/s/AKfycbzN3IiQveleCYrSZfTJyPJDpBJWZbVPwRDRlBrOtZYG7nrKiB3N_TXIcUSP-i-QYUc/exec', {
-                                            
     method: 'POST',
     body: JSON.stringify(data)
   })
@@ -49,24 +48,40 @@ document.getElementById('end-form').addEventListener('submit', function (e) {
     .catch(error => alert('⚠️ 오류 발생: ' + error));
 });
 
-// 🟡 음성 입력 시작
+// 🟡 음성 입력 시작 (실시간 텍스트 + 오류 디버깅 개선)
 function startVoiceInput() {
   const recognition = new webkitSpeechRecognition();
   recognition.lang = 'ko-KR';
-  recognition.interimResults = false;
+  recognition.interimResults = true;
   recognition.maxAlternatives = 1;
 
   recognition.start();
+  console.log("🎤 음성 인식 시작됨");
 
   recognition.onresult = function (event) {
-    const transcript = event.results[0][0].transcript;
-    document.getElementById('voice-result').textContent = '🎤 인식된 음성: ' + transcript;
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      transcript += event.results[i][0].transcript;
+    }
 
-    parseVoiceInput(transcript);
+    document.getElementById('voice-result').textContent = '🎤 인식된 음성: ' + transcript;
+    console.log("🎧 인식된 텍스트:", transcript);
+
+    if (event.results[event.results.length - 1].isFinal) {
+      parseVoiceInput(transcript);
+    }
   };
 
   recognition.onerror = function (event) {
-    alert('음성 인식 오류: ' + event.error);
+    console.error('🚨 음성 인식 오류 발생');
+    console.error('🔍 오류 타입:', event.error);
+    console.error('📄 전체 이벤트 정보:', event);
+
+    alert(
+      '⚠️ 음성 인식 오류가 발생했어요.\n' +
+      '오류 유형: ' + event.error + '\n' +
+      '콘솔에서 추가 정보 확인 가능 (F12 → Console)'
+    );
   };
 }
 
@@ -85,6 +100,7 @@ function parseVoiceInput(text) {
     document.getElementById('planned-end-page').value = plannedEndPage;
     document.getElementById('duration').value = duration;
   } catch (err) {
-    alert('음성에서 정보를 정확히 인식하지 못했어요.');
+    console.warn('⚠️ 음성 분석 중 오류 발생:', err);
+    alert('음성에서 정보를 정확히 인식하지 못했어요.\n형식: "수학 자습서 10페이지에서 20페이지 30분" 등으로 또박또박 말해보세요.');
   }
 }
