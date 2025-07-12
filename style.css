@@ -1,0 +1,57 @@
+/* style.css */
+
+/* 전체 배경과 글자 */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  background-color: #f5f5f5;
+}
+
+/* 제목 */
+h1 {
+  color: #1d3557;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* 입력 폼 */
+form {
+  margin-bottom: 25px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 입력창과 버튼 */
+input {
+  width: 90%;
+  margin: 5px 0 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #457b9d;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+button:hover {
+  background-color: #1d3557;
+}
+
+/* 음성 결과 텍스트 */
+#voice-result {
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 10px;
+}

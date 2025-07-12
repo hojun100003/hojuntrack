@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>HojunTrack</title>
+  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>📘 HojunTrack – 학습 계획/실천 기록</h1>
+
+  <form id="study-form">
+    <label>과목: <input type="text" id="subject" required /></label><br />
+    <label>교재명: <input type="text" id="book" required /></label><br />
+    <label>시작 페이지: <input type="number" id="start-page" required /></label><br />
+    <label>계획 종료 페이지: <input type="number" id="planned-end-page" required /></label><br />
+    <label>학습 시간 (분): <input type="number" id="duration" required /></label><br />
+    <button type="submit">📌 학습 시작 기록</button>
+  </form>
+
+  <hr />
+
+  <form id="end-form">
+    <label>실제 종료 페이지: <input type="number" id="actual-end-page" required /></label><br />
+    <button type="submit">✅ 학습 종료 기록</button>
+  </form>
+
+  <hr />
+
+  <button onclick="startVoiceInput()">🎙 음성으로 입력하기</button>
+  <p id="voice-result">🎤 인식된 음성: 없음</p>
+</body>
+</html>
