@@ -39,7 +39,7 @@ document.getElementById('end-form').addEventListener('submit', function (e) {
     actualEndPage
   };
 
-  fetch('https://script.google.com/macros/s/여기에_네_URL_붙여넣기/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbzN3IiQveleCYrSZfTJyPJDpBJWZbVPwRDRlBrOtZYG7nrKiB3N_TXIcUSP-i-QYUc/exec/exec', {
     method: 'POST',
     body: JSON.stringify(data)
   })
