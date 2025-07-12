@@ -86,21 +86,45 @@ function startVoiceInput() {
 }
 
 // 🟡 음성 인식된 텍스트 분석해서 자동 입력
+// 🟡 음성 인식된 텍스트 분석해서 자동 입력
 function parseVoiceInput(text) {
   try {
-    const subject = text.match(/^\S+/)[0];
-    const book = text.match(/\s(\S+)\s/)[1];
-    const startPage = parseInt(text.match(/(\d+)페이지/)[1]);
-    const plannedEndPage = parseInt(text.match(/에서\s*(\d+)페이지/)[1]);
-    const duration = parseInt(text.match(/(\d+)분/)[1]);
+    const subjectMatch = text.match(/^\S+/);
+    const bookMatch = text.match(/\s(\S+)\s/);
+    const startPageMatch = text.match(/(\d+)페이지/);
+    const plannedEndPageMatch = text.match(/에서\s*(\d+)페이지/);
+    const durationMatch = text.match(/(\d+)분/);
 
+    if (!subjectMatch || !bookMatch || !startPageMatch || !plannedEndPageMatch || !durationMatch) {
+      console.warn("⚠️ 일부 정보를 인식하지 못했습니다.");
+      console.warn("🧾 전체 인식된 문장:", text);
+      console.warn("📌 인식 결과:");
+      console.warn("subjectMatch:", subjectMatch);
+      console.warn("bookMatch:", bookMatch);
+      console.warn("startPageMatch:", startPageMatch);
+      console.warn("plannedEndPageMatch:", plannedEndPageMatch);
+      console.warn("durationMatch:", durationMatch);
+
+      alert("음성에서 정보를 정확히 인식하지 못했어요.\n형식 예: '국어 자습서 10페이지에서 20페이지까지 30분'");
+      return;
+    }
+
+    // 안전하게 값 대입
+    const subject = subjectMatch[0];
+    const book = bookMatch[1];
+    const startPage = parseInt(startPageMatch[1]);
+    const plannedEndPage = parseInt(plannedEndPageMatch[1]);
+    const duration = parseInt(durationMatch[1]);
+
+    // 화면에 자동 입력
     document.getElementById('subject').value = subject;
     document.getElementById('book').value = book;
     document.getElementById('start-page').value = startPage;
     document.getElementById('planned-end-page').value = plannedEndPage;
     document.getElementById('duration').value = duration;
   } catch (err) {
-    console.warn('⚠️ 음성 분석 중 오류 발생:', err);
-    alert('음성에서 정보를 정확히 인식하지 못했어요.\n형식: "수학 자습서 10페이지에서 20페이지 30분" 등으로 또박또박 말해보세요.');
+    console.error('❌ 예외 발생:', err);
+    alert('음성 인식 처리 중 예상치 못한 오류가 발생했습니다.');
   }
 }
+
