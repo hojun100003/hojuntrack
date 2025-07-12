@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>HojunTrack</title>
-  <script src="script.js" defer></script>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>HojunTrack - 학습 실행 기록</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>📘 HojunTrack – 학습 계획/실천 기록</h1>
+  <h1>📘 HojunTrack - 학습 실행 기록</h1>
 
+  <!-- 학습 시작 입력 폼 -->
   <form id="study-form">
-    <label>과목: <input type="text" id="subject" required /></label><br />
-    <label>교재명: <input type="text" id="book" required /></label><br />
-    <label>시작 페이지: <input type="number" id="start-page" required /></label><br />
-    <label>계획 종료 페이지: <input type="number" id="planned-end-page" required /></label><br />
-    <label>학습 시간 (분): <input type="number" id="duration" required /></label><br />
-    <button type="submit">📌 학습 시작 기록</button>
+    <h2>✅ 학습 시작</h2>
+    <label>과목: <input type="text" id="subject" required></label><br>
+    <label>교재명: <input type="text" id="book" required></label><br>
+    <label>시작 페이지: <input type="number" id="start-page" required></label><br>
+    <label>종료 페이지(계획): <input type="number" id="planned-end-page" required></label><br>
+    <label>예상 학습 시간(분): <input type="number" id="duration" required></label><br>
+    <button type="submit">📤 학습 시작 기록</button>
+    <button type="button" onclick="startStudyVoiceInput()">🎤 시작 음성 입력</button>
   </form>
 
-  <hr />
+  <hr>
 
+  <!-- 학습 종료 입력 폼 -->
   <form id="end-form">
-    <label>실제 종료 페이지: <input type="number" id="actual-end-page" required /></label><br />
-    <button type="submit">✅ 학습 종료 기록</button>
+    <h2>🏁 학습 종료</h2>
+    <label>실제 종료 페이지: <input type="number" id="actual-end-page" required></label><br>
+    <button type="submit">📤 학습 종료 기록</button>
+    <button type="button" onclick="endStudyVoiceInput()">🎤 종료 음성 입력</button>
   </form>
 
-  <hr />
+  <hr>
 
-  <button onclick="startVoiceInput()">🎙 음성으로 입력하기</button>
-  <p id="voice-result">🎤 인식된 음성: 없음</p>
+  <!-- 음성 인식 결과 출력 -->
+  <p id="voice-result">🎙️ 음성 인식 결과가 여기에 표시됩니다</p>
+
+  <script src="script.js"></script>
 </body>
 </html>
