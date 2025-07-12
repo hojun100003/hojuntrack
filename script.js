@@ -39,7 +39,7 @@ document.getElementById('end-form').addEventListener('submit', function (e) {
     actualEndPage
   };
 
-  fetch('https://script.google.com/macros/s/AKfycbzN3IiQveleCYrSZfTJyPJDpBJWZbVPwRDRlBrOtZYG7nrKiB3N_TXIcUSP-i-QYUc/exec/exec', {
+  fetch('https://script.google.com/macros/s/AKfycbzN3IiQveleCYrSZfTJyPJDpBJWZbVPwRDRlBrOtZYG7nrKiB3N_TXIcUSP-i-QYUc/exec', {
     method: 'POST',
     body: JSON.stringify(data)
   })
