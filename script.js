@@ -69,7 +69,7 @@ function submitStartStudy() {
     duration
   };
 
-  fetch("https://script.google.com/macros/s/YOUR_DEPLOYED_WEBAPP_URL/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzN3IiQveleCYrSZfTJyPJDpBJWZbVPwRDRlBrOtZYG7nrKiB3N_TXIcUSP-i-QYUc/exec", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
@@ -105,7 +105,7 @@ function submitEndStudy() {
     actualEndPage
   };
 
-  fetch("https://script.google.com/macros/s/YOUR_DEPLOYED_WEBAPP_URL/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzN3IiQveleCYrSZfTJyPJDpBJWZbVPwRDRlBrOtZYG7nrKiB3N_TXIcUSP-i-QYUc/exec", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
