@@ -1,71 +1,97 @@
 // script.js
 
-let recognition;
-let recognizing = false;
+// 🎤 필드별 음성 입력을 위한 recognition 객체 설정
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = 'ko-KR';
+recognition.interimResults = true;
+
 let currentField = null;
-let silenceTimer;
+let recognitionTimeout = null;
 
+// 🧠 필드별 음성 입력 인식 함수
 function startFieldRecognition(fieldId) {
-  if (recognizing) {
-    stopRecognition();
-    return;
-  }
   currentField = fieldId;
-  startRecognition();
-}
+  document.getElementById(`${fieldId}-voice-btn`).disabled = true;
 
-function startRecognition() {
-  recognition = new webkitSpeechRecognition();
-  recognition.lang = 'ko-KR';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 1;
+  let transcript = '';
 
-  recognition.onstart = () => {
-    recognizing = true;
-    document.getElementById(currentField + '-voice-btn').classList.add('blinking');
-    silenceTimer = setTimeout(() => {
-      stopRecognition();
-    }, 5000); // 5초 후 자동 종료 (무음 기준으로 설정할 수 없음, 단순 타이머)
-  };
+  recognition.start();
+  console.log(`🎤 ${fieldId} 필드 음성 인식 시작됨`);
 
   recognition.onresult = (event) => {
-    const transcript = event.results[0][0].transcript;
-    console.log("🎙️ 음성 원문:", transcript);
-    document.getElementById(currentField).value = transcript.replace(/[^0-9가-힣 ]/g, '');
-    document.getElementById("voice-result").innerHTML = `🎙️ ${currentField} 인식된 음성: ${transcript}`;
-  };
+    transcript = Array.from(event.results)
+      .map((result) => result[0].transcript)
+      .join('');
+    console.log(`🎧 인식된 텍스트 (${fieldId}):`, transcript);
 
-  recognition.onerror = (event) => {
-    alert('⚠️ 음성 인식 오류: ' + event.error);
+    if (recognitionTimeout) clearTimeout(recognitionTimeout);
+    recognitionTimeout = setTimeout(() => {
+      recognition.stop();
+    }, 2000); // 🔁 2초 동안 추가 음성이 없으면 자동 종료
   };
 
   recognition.onend = () => {
-    recognizing = false;
-    clearTimeout(silenceTimer);
-    document.getElementById(currentField + '-voice-btn').classList.remove('blinking');
+    console.log(`🛑 ${fieldId} 필드 음성 인식 종료됨`);
+    document.getElementById(`${fieldId}-voice-btn`).disabled = false;
+    handleFieldTranscript(fieldId, transcript);
   };
 
-  recognition.start();
+  recognition.onerror = (event) => {
+    console.error(`❌ ${fieldId} 필드 인식 오류:`, event.error);
+    alert(`⚠️ ${fieldId} 항목 음성 인식 중 오류 발생: ${event.error}`);
+    document.getElementById(`${fieldId}-voice-btn`).disabled = false;
+  };
 }
 
-function stopRecognition() {
-  if (recognition) recognition.stop();
+// 📝 필드별 텍스트 처리 함수
+function handleFieldTranscript(fieldId, text) {
+  const numberPattern = /\d+/g;
+  const numbers = text.match(numberPattern);
+
+  if (!numbers || numbers.length === 0) {
+    alert(`⚠️ ${fieldId} 항목에서 숫자를 추출하지 못했어요.`);
+    return;
+  }
+
+  if (fieldId === 'book') {
+    document.getElementById(fieldId).value = text.trim();
+  } else {
+    document.getElementById(fieldId).value = parseInt(numbers[0]);
+  }
+
+  const log = document.getElementById('voice-result');
+  log.innerHTML = `📝 ${fieldId} 인식된 음성: ${text}`;
 }
 
+// ✅ 학습 시작 기록 제출 함수
 function submitStartStudy() {
-  const book = document.getElementById('book').value;
+  const book = document.getElementById('book').value.trim();
   const startPage = document.getElementById('start-page').value;
   const plannedEndPage = document.getElementById('planned-end-page').value;
   const duration = document.getElementById('duration').value;
 
   if (!book || !startPage || !plannedEndPage || !duration) {
-    alert('모든 항목을 입력해야 합니다.');
+    alert('⚠️ 모든 항목을 입력해주세요.');
     return;
   }
 
-  console.log('✅ 학습 시작 기록:', { book, startPage, plannedEndPage, duration });
-  alert('📌 학습 기록이 완료되었습니다!');
+  const eventTitle = `${book} ${startPage}~${plannedEndPage} ${duration}분 학습`;
+  const now = new Date();
+  const startTime = now.toISOString();
+  const endTime = new Date(now.getTime() + duration * 60000).toISOString();
 
-  document.getElementById('study-form').reset();
-  document.getElementById('voice-result').textContent = '';
+  const event = {
+    summary: eventTitle,
+    start: {
+      dateTime: startTime,
+      timeZone: 'Asia/Seoul',
+    },
+    end: {
+      dateTime: endTime,
+      timeZone: 'Asia/Seoul',
+    },
+  };
+
+  console.log('📅 전송할 이벤트:', event);
+  alert('✅ 학습 시작 기록이 준비되었습니다. (캘린더 전송은 생략됨)');
 }
