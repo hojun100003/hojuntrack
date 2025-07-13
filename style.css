@@ -1,80 +1,104 @@
-/* style.css */
+/* style.css - HojunTrack 스타일 정의 */
+
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f6f9fc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f8fa;
   margin: 0;
   padding: 0;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 420px;
   margin: 30px auto;
-  background: white;
-  padding: 20px 30px;
+  padding: 20px 25px;
+  background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.08);
 }
 
 h1 {
+  font-size: 22px;
+  margin-bottom: 25px;
+  color: #1d3557;
   display: flex;
   align-items: center;
-  font-size: 24px;
-}
-
-h1 img {
-  margin-right: 10px;
+  gap: 8px;
 }
 
 h2 {
-  margin-top: 30px;
-  color: #333;
+  font-size: 18px;
+  margin-top: 20px;
+  color: #2d2d2d;
 }
 
-.input-group {
-  margin-bottom: 18px;
+label {
+  font-weight: bold;
+  margin-top: 15px;
+  display: block;
 }
 
-.input-with-btn {
-  display: flex;
-}
-
-.input-with-btn input {
-  flex: 1;
-  padding: 8px;
-  font-size: 15px;
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
   border: 1px solid #ccc;
-  border-radius: 6px 0 0 6px;
-  outline: none;
-}
-
-.input-with-btn button {
-  background-color: #28a745;
-  border: none;
-  color: white;
-  padding: 8px 12px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px;
+  font-size: 15px;
 }
 
 button {
-  margin-top: 10px;
-  padding: 10px 16px;
-  font-size: 15px;
-  background-color: #007bff;
-  color: white;
+  cursor: pointer;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
 }
 
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+button.primary {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  margin-top: 12px;
+  display: block;
+  width: 100%;
+}
+
+button.primary:hover {
+  background-color: #0056b3;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.input-group input {
+  flex-grow: 1;
+}
+
+.input-group button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 10px;
+  font-size: 15px;
+}
+
+.input-group button:hover {
+  background-color: #388e3c;
 }
 
 #voice-result {
-  margin-top: 25px;
+  margin-top: 15px;
+  font-size: 14px;
   font-style: italic;
-  color: #333;
+  color: #444;
+  padding: 8px;
+  background-color: #eef6f6;
+  border-left: 4px solid #66bb6a;
+  border-radius: 6px;
 }
