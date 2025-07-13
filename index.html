@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HojunTrack 학습 기록 앱</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>HojunTrack - 학습 기록</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>📃 <strong>HojunTrack</strong> 학습 기록 웹앱</h1>
+  <h1>📚 HojunTrack 학습 기록</h1>
 
-  <!-- 학습 시작 섹션 -->
+  <!-- 🔵 학습 시작 영역 -->
   <section id="study-section">
-    <h2>1️⃣ 학습 시작 기록</h2>
-    <label>과목: <input type="text" id="subject" /></label><br />
-    <label>교재명: <input type="text" id="book" /></label><br />
-    <label>시작 페이지: <input type="number" id="start-page" /></label><br />
-    <label>계획 종료 페이지: <input type="number" id="planned-end-page" /></label><br />
-    <label>학습 시간(분): <input type="number" id="duration" /></label><br />
-    <button onclick="submitStartStudy()" id="start-submit">✅ 학습 시작 기록</button>
-    <button onclick="toggleVoiceInput('start')" id="start-voice-btn">🎙️ 학습 시작 음성 입력 개시</button>
+    <h2>🟢 학습 시작</h2>
+    <form id="study-form">
+      <label>과목: <input type="text" id="subject" required></label><br>
+      <label>교재명: <input type="text" id="book" required></label><br>
+      <label>시작 페이지: <input type="number" id="start-page" required></label><br>
+      <label>계획 종료 페이지: <input type="number" id="planned-end-page" required></label><br>
+      <label>학습 시간 (분): <input type="number" id="duration" required></label><br><br>
+      <button type="button" onclick="submitStartStudy()">✅ 학습 시작 기록</button>
+    </form>
+    <br>
+    <button id="start-voice-btn" onclick="toggleVoiceInput('start')">🎙️ 학습 시작 음성 입력 개시</button>
   </section>
 
-  <!-- 학습 종료 섹션 -->
-  <section id="end-section">
-    <h2>2️⃣ 학습 종료 기록</h2>
-    <label>과목: <input type="text" id="end-subject" disabled /></label><br />
-    <label>교재명: <input type="text" id="end-book" disabled /></label><br />
-    <label>시작 페이지: <input type="number" id="end-start-page" disabled /></label><br />
-    <label>실제 종료 페이지: <input type="number" id="actual-end-page" /></label><br />
-    <label>학습 시간(분): <input type="number" id="actual-duration" /></label><br />
-    <button onclick="submitEndStudy()" id="end-submit">✅ 학습 종료 기록</button>
-    <button onclick="toggleVoiceInput('end')" id="end-voice-btn">🎙️ 학습 종료 음성 입력 개시</button>
+  <!-- 🔴 학습 종료 영역 -->
+  <section id="end-section" style="display:none;">
+    <h2>🔴 학습 종료</h2>
+    <form id="end-form">
+      <label>과목: <input type="text" id="end-subject" disabled></label><br>
+      <label>교재명: <input type="text" id="end-book" disabled></label><br>
+      <label>시작 페이지: <input type="number" id="end-start-page" disabled></label><br>
+      <label>실제 종료 페이지: <input type="number" id="actual-end-page" required></label><br>
+      <label>실제 학습 시간 (분): <input type="number" id="actual-duration" required></label><br><br>
+      <button type="button" onclick="submitEndStudy()">✅ 학습 종료 기록</button>
+    </form>
+    <br>
+    <button id="end-voice-btn" onclick="toggleVoiceInput('end')">🎙️ 학습 종료 음성 입력 개시</button>
   </section>
 
-  <!-- 음성 인식 결과 -->
-  <div id="voice-result"></div>
+  <!-- 음성 인식 결과 표시 -->
+  <p id="voice-result" style="margin-top:20px; font-weight:bold;"></p>
 
   <script src="script.js"></script>
 </body>
