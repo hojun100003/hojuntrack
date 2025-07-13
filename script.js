@@ -25,7 +25,7 @@ function submitStartStudy() {
     .then(response => response.text())
     .then(result => {
       alert('✅ 학습 시작 기록 완료: ' + result);
-      latestStartData = { subject, book, startPage, duration };
+      latestStartData = { subject, book, startPage, duration, plannedEndPage };
       updateEndFormWithStartData();
       toggleSections(true);
     })
@@ -58,6 +58,7 @@ function updateEndFormWithStartData() {
   document.getElementById('end-subject').value = latestStartData.subject || '';
   document.getElementById('end-book').value = latestStartData.book || '';
   document.getElementById('end-start-page').value = latestStartData.startPage || '';
+  document.getElementById('actual-end-page').value = latestStartData.plannedEndPage || '';
   document.getElementById('actual-duration').value = latestStartData.duration || '';
 }
 
@@ -113,7 +114,7 @@ function startVoiceInput(mode) {
     if (finalTranscript.trim()) {
       parseVoiceInput(finalTranscript, currentMode);
     } else {
-      alert('⚠️ 음성을 인식하지 못했습니다.');
+      alert('⚠️ 음성을 인식하지 못했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -123,9 +124,12 @@ function startVoiceInput(mode) {
 // 음성 텍스트 파싱
 function parseVoiceInput(text, mode) {
   try {
+    console.log('🎯 음성 원문:', text);
     const match = text.match(/(\S+)\s+(\S+)\s+(\d+)페이지(?:에서)?\s*(\d+)페이지(?:까지)?\s*(\d+)분/);
+    console.log('🧩 정규식 매칭 결과:', match);
+
     if (!match) {
-      alert('⚠️ 음성에서 필요한 정보를 추출하지 못했어요.');
+      alert('⚠️ 음성에서 필요한 정보를 추출하지 못했어요.\n예시: "수학 천재 10페이지에서 20페이지까지 30분"');
       return;
     }
 
@@ -145,7 +149,7 @@ function parseVoiceInput(text, mode) {
     }
   } catch (e) {
     console.error('❌ 분석 오류:', e);
-    alert('⚠️ 음성 분석 중 오류 발생');
+    alert('⚠️ 음성 분석 중 오류 발생. 콘솔에서 상세 오류를 확인하세요.');
   }
 }
 
