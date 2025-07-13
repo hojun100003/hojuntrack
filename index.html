@@ -1,57 +1,79 @@
+<!-- index.html - HojunTrack 메인 페이지 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>HojunTrack 학습기록</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://apis.google.com/js/api.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HojunTrack 학습 기록</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>HojunTrack 📘</h1>
+  <div class="container">
+    <h1><img src="https://www.gstatic.com/images/icons/material/system/1x/event_note_black_24dp.png" alt="icon" style="vertical-align: middle;"> <strong>HojunTrack</strong> 학습 기록</h1>
+    
+    <!-- 🟢 학습 시작 섹션 -->
+    <section id="study-section">
+      <h2>🟢 학습 시작</h2>
 
-  <div id="study-section">
-    <h2>학습 시작 기록</h2>
-    <label>교재명:
-      <input type="text" id="book">
-      <button onclick="startFieldRecognition('book')">🎙️</button>
-    </label>
-    <label>시작 페이지:
-      <input type="number" id="start-page">
-      <button onclick="startFieldRecognition('start-page')">🎙️</button>
-    </label>
-    <label>계획 종료 페이지:
-      <input type="number" id="planned-end-page">
-      <button onclick="startFieldRecognition('planned-end-page')">🎙️</button>
-    </label>
-    <label>학습 시간 (분):
-      <input type="number" id="duration">
-      <button onclick="startFieldRecognition('duration')">🎙️</button>
-    </label>
-    <button onclick="submitStartStudy()">✅ 학습 시작 기록</button>
+      <label for="book">교재명:</label>
+      <div class="input-group">
+        <input id="book" type="text" />
+        <button onclick="startFieldRecognition('book')">🎙️</button>
+      </div>
+
+      <label for="start-page">시작 페이지:</label>
+      <div class="input-group">
+        <input id="start-page" type="number" />
+        <button onclick="startFieldRecognition('start-page')">🎙️</button>
+      </div>
+
+      <label for="planned-end-page">계획 종료 페이지:</label>
+      <div class="input-group">
+        <input id="planned-end-page" type="number" />
+        <button onclick="startFieldRecognition('planned-end-page')">🎙️</button>
+      </div>
+
+      <label for="duration">학습 시간 (분):</label>
+      <div class="input-group">
+        <input id="duration" type="number" />
+        <button onclick="startFieldRecognition('duration')">🎙️</button>
+      </div>
+
+      <button class="primary" onclick="submitStartStudy()">✅ 학습 시작 기록</button>
+    </section>
+
+    <!-- 🔴 학습 종료 섹션 -->
+    <section id="end-section" style="display: none;">
+      <h2>🔴 학습 종료</h2>
+
+      <label for="end-book">교재명:</label>
+      <div class="input-group">
+        <input id="end-book" type="text" disabled />
+      </div>
+
+      <label for="end-start-page">시작 페이지:</label>
+      <div class="input-group">
+        <input id="end-start-page" type="number" disabled />
+      </div>
+
+      <label for="end-end-page">실행 종료 페이지:</label>
+      <div class="input-group">
+        <input id="end-end-page" type="number" />
+        <button onclick="startFieldRecognition('end-end-page')">🎙️</button>
+      </div>
+
+      <label for="end-duration">계획 학습 시간 (분):</label>
+      <div class="input-group">
+        <input id="end-duration" type="number" disabled />
+      </div>
+
+      <button class="primary" onclick="submitEndStudy()">📌 학습 종료 기록</button>
+    </section>
+
+    <!-- 🎤 음성 결과 로그 -->
+    <p id="voice-result" style="font-style: italic; color: #555; margin-top: 20px;">🎤 인식된 음성 로그 표시 영역</p>
   </div>
 
-  <div id="end-section" style="display:none">
-    <h2>학습 실행 종료 기록</h2>
-    <label>교재명:
-      <input type="text" id="end-book" disabled>
-      <button id="end-book-voice-btn" onclick="startFieldRecognition('end-book')">🎙️</button>
-    </label>
-    <label>시작 페이지:
-      <input type="number" id="end-start-page" disabled>
-      <button id="end-start-page-voice-btn" onclick="startFieldRecognition('end-start-page')">🎙️</button>
-    </label>
-    <label>실행 종료 페이지:
-      <input type="number" id="end-end-page">
-      <button id="end-end-page-voice-btn" onclick="startFieldRecognition('end-end-page')">🎙️</button>
-    </label>
-    <label>계획 학습 시간 (분):
-      <input type="number" id="end-duration" disabled>
-      <button id="end-duration-voice-btn" onclick="startFieldRecognition('end-duration')">🎙️</button>
-    </label>
-    <button onclick="submitEndStudy()">✅ 학습 종료 기록</button>
-  </div>
-
-  <p id="voice-result">🎤 인식된 음성:</p>
   <script src="script.js"></script>
 </body>
 </html>
