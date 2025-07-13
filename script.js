@@ -1,167 +1,131 @@
 // script.js
 
-// 🎤 필드별 음성 입력을 위한 recognition 객체 설정
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'ko-KR';
-recognition.interimResults = true;
+// Google Calendar 연동을 위한 토큰 및 기타 설정은 별도로 처리되어야 함
 
+let recognition;
 let currentField = null;
-let recognitionTimeout = null;
-let lastStartData = {};
+let timeoutHandle;
 
-// 🧠 필드별 음성 입력 인식 함수
-function startFieldRecognition(fieldId) {
-  currentField = fieldId;
-  document.getElementById(`${fieldId}-voice-btn`).disabled = true;
+// 음성 인식 초기화 함수
+function initRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'ko-KR';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
-  let transcript = '';
+  recognition.onresult = function (event) {
+    const transcript = event.results[0][0].transcript;
+    console.log(`음성 원문: ${transcript}`);
+    handleRecognizedText(transcript);
+  };
 
+  recognition.onerror = function (event) {
+    console.error('음성 인식 오류:', event.error);
+    alert('음성 인식 중 오류가 발생했습니다. 다시 시도해주세요.');
+  };
+}
+
+// 특정 필드에 대한 음성 인식 시작
+function startFieldRecognition(field) {
+  if (!recognition) initRecognition();
+  currentField = field;
   recognition.start();
-  console.log(`🎤 ${fieldId} 필드 음성 인식 시작됨`);
 
-  recognition.onresult = (event) => {
-    transcript = Array.from(event.results)
-      .map((result) => result[0].transcript)
-      .join('');
-    console.log(`🎧 인식된 텍스트 (${fieldId}):`, transcript);
-
-    if (recognitionTimeout) clearTimeout(recognitionTimeout);
-    recognitionTimeout = setTimeout(() => {
-      recognition.stop();
-    }, 2000); // 🔁 2초 동안 추가 음성이 없으면 자동 종료
-  };
-
-  recognition.onend = () => {
-    console.log(`🛑 ${fieldId} 필드 음성 인식 종료됨`);
-    document.getElementById(`${fieldId}-voice-btn`).disabled = false;
-    handleFieldTranscript(fieldId, transcript);
-  };
-
-  recognition.onerror = (event) => {
-    console.error(`❌ ${fieldId} 필드 인식 오류:`, event.error);
-    alert(`⚠️ ${fieldId} 항목 음성 인식 중 오류 발생: ${event.error}`);
-    document.getElementById(`${fieldId}-voice-btn`).disabled = false;
-  };
+  // 2초 후 자동 종료
+  if (timeoutHandle) clearTimeout(timeoutHandle);
+  timeoutHandle = setTimeout(() => {
+    recognition.stop();
+  }, 2000);
 }
 
-// 📝 필드별 텍스트 처리 함수
-function handleFieldTranscript(fieldId, text) {
-  const numberPattern = /\d+/g;
-  const numbers = text.match(numberPattern);
+// 숫자가 필요한 필드 여부 확인
+function isNumericField(field) {
+  return [
+    'start-page', 'planned-end-page', 'duration',
+    'end-start-page', 'end-end-page', 'end-duration'
+  ].includes(field);
+}
 
-  if (!numbers || numbers.length === 0) {
-    alert(`⚠️ ${fieldId} 항목에서 숫자를 추출하지 못했어요.`);
-    return;
-  }
+// 음성 인식 결과 처리
+function handleRecognizedText(transcript) {
+  document.getElementById("voice-result").textContent = `🎤 인식된 음성: ${transcript}`;
 
-  if (fieldId === 'book') {
-    document.getElementById(fieldId).value = text.trim();
+  if (!currentField) return;
+  const inputEl = document.getElementById(currentField);
+
+  if (!inputEl) return;
+
+  if (isNumericField(currentField)) {
+    const numMatch = transcript.match(/\d+/);
+    if (numMatch) {
+      inputEl.value = numMatch[0];
+    } else {
+      alert(`⚠️ ${currentField} 항목에서 숫자를 추출하지 못했어요.`);
+    }
   } else {
-    document.getElementById(fieldId).value = parseInt(numbers[0]);
+    inputEl.value = transcript.trim();
   }
-
-  const log = document.getElementById('voice-result');
-  log.innerHTML = `📝 ${fieldId} 인식된 음성: ${text}`;
 }
 
-// ✅ 학습 시작 기록 제출 함수
+// 학습 시작 기록 제출 함수
 function submitStartStudy() {
-  const book = document.getElementById('book').value.trim();
+  const book = document.getElementById('book').value;
   const startPage = document.getElementById('start-page').value;
   const plannedEndPage = document.getElementById('planned-end-page').value;
   const duration = document.getElementById('duration').value;
 
   if (!book || !startPage || !plannedEndPage || !duration) {
-    alert('⚠️ 모든 항목을 입력해주세요.');
+    alert('모든 항목을 입력해주세요.');
     return;
   }
 
-  const eventTitle = `${book} ${startPage}~${plannedEndPage} ${duration}분 학습`;
-  const now = new Date();
-  const startTime = now.toISOString();
-  const endTime = new Date(now.getTime() + duration * 60000).toISOString();
+  console.log(`✅ 학습 시작 기록됨: ${book}, ${startPage}~${plannedEndPage}, ${duration}분`);
 
-  const event = {
-    summary: eventTitle,
-    start: {
-      dateTime: startTime,
-      timeZone: 'Asia/Seoul',
-    },
-    end: {
-      dateTime: endTime,
-      timeZone: 'Asia/Seoul',
-    },
-  };
+  // 캘린더 기록 로직 추가 필요 (예: Google Calendar API 호출)
 
-  console.log('📅 전송할 이벤트:', event);
-  alert('✅ 학습 시작 기록이 완료되었습니다.');
+  // 종료 입력용 폼에 데이터 이전
+  document.getElementById('end-book').value = book;
+  document.getElementById('end-start-page').value = startPage;
+  document.getElementById('end-end-page').value = plannedEndPage;
+  document.getElementById('end-duration').value = duration;
 
-  // 저장된 정보로 상태 전환
-  lastStartData = {
-    book,
-    startPage,
-    plannedEndPage,
-    duration,
-  };
-  switchToEndSection();
-}
-
-// 🔄 학습 종료 섹션으로 화면 전환
-function switchToEndSection() {
+  // 종료 폼에서 일부 비활성화, 일부 활성화
   document.getElementById('study-section').style.display = 'none';
-  const endSection = document.getElementById('end-section');
-  endSection.style.display = 'block';
+  document.getElementById('end-section').style.display = 'block';
 
-  document.getElementById('end-book').value = lastStartData.book;
   document.getElementById('end-book').disabled = true;
   document.getElementById('end-book-voice-btn').disabled = true;
 
-  document.getElementById('end-start-page').value = lastStartData.startPage;
   document.getElementById('end-start-page').disabled = true;
   document.getElementById('end-start-page-voice-btn').disabled = true;
 
-  document.getElementById('end-end-page').value = lastStartData.plannedEndPage;
   document.getElementById('end-end-page').disabled = false;
   document.getElementById('end-end-page-voice-btn').disabled = false;
 
-  document.getElementById('end-duration').value = lastStartData.duration;
   document.getElementById('end-duration').disabled = true;
   document.getElementById('end-duration-voice-btn').disabled = true;
 }
 
-// ✅ 학습 종료 기록 제출 함수
+// 학습 종료 기록 제출 함수
 function submitEndStudy() {
-  const book = document.getElementById('end-book').value;
-  const startPage = document.getElementById('end-start-page').value;
   const endPage = document.getElementById('end-end-page').value;
-  const duration = document.getElementById('end-duration').value;
 
-  if (!book || !startPage || !endPage || !duration) {
-    alert('⚠️ 종료 항목 누락됨');
+  if (!endPage) {
+    alert('실행 종료 페이지를 입력해주세요.');
     return;
   }
 
-  const eventTitle = `${book} ${startPage}~${endPage} ${duration}분 학습 종료`;
-  const now = new Date();
-  const startTime = lastStartData ? new Date().getTime() - duration * 60000 : now.getTime();
-  const endTime = now.toISOString();
+  const endTime = new Date().toISOString();
+  console.log(`✅ 학습 종료 기록됨: 종료 페이지 ${endPage}, 종료 시각: ${endTime}`);
 
-  const event = {
-    summary: eventTitle,
-    start: {
-      dateTime: new Date(startTime).toISOString(),
-      timeZone: 'Asia/Seoul',
-    },
-    end: {
-      dateTime: endTime,
-      timeZone: 'Asia/Seoul',
-    },
-  };
+  // 캘린더 기록 종료 로직 추가 필요 (예: Google Calendar API 호출)
 
-  console.log('📅 종료 이벤트 전송됨:', event);
-  alert('✅ 학습 종료 기록 완료되었습니다.');
-
-  // 상태 리셋
-  document.getElementById('study-section').style.display = 'block';
-  document.getElementById('end-section').style.display = 'none';
+  alert('학습 종료 기록이 완료되었습니다.');
+  location.reload(); // 초기화
 }
+
+// 초기 설정
+window.onload = () => {
+  initRecognition();
+};
