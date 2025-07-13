@@ -1,98 +1,73 @@
-/* style.css */
-
-/* 전체 배경 및 폰트 */
 body {
-  font-family: 'Noto Sans KR', sans-serif;
-  background-color: #f8fafc;
-  margin: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f6f9fc;
+  padding: 30px;
+  color: #333;
+}
+
+h1 {
+  font-size: 28px;
   color: #222;
 }
 
-/* 제목 */
-h1 {
-  font-size: 1.8em;
-  margin-bottom: 1em;
-}
-
-/* 섹션 제목 */
 h2 {
-  font-size: 1.3em;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
+  font-size: 20px;
+  margin-top: 30px;
   color: #444;
 }
 
-/* 입력 필드 라벨 */
-label {
-  display: block;
-  margin: 10px 0 5px;
+form {
+  margin-bottom: 20px;
 }
 
-/* 입력 필드 */
+label {
+  display: inline-block;
+  margin: 8px 0 4px;
+  font-weight: bold;
+}
+
 input[type="text"],
 input[type="number"] {
   width: 100%;
+  max-width: 400px;
   padding: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  box-sizing: border-box;
-  background-color: #fff;
+  font-size: 15px;
 }
 
-/* 버튼 기본 스타일 */
 button {
   background-color: #4CAF50;
   color: white;
-  padding: 8px 14px;
-  margin-top: 10px;
+  padding: 10px 16px;
+  margin: 10px 5px 0 0;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.95em;
+  font-size: 15px;
 }
 
-/* 비활성 버튼 스타일 */
-button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
+button:hover {
+  background-color: #45a049;
 }
 
-/* 음성 인식 결과 표시 */
+button.blinking {
+  animation: blink 1s infinite;
+  background-color: #ff9933;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
 #voice-result {
-  margin-top: 15px;
   font-style: italic;
+  font-size: 14px;
   color: #555;
-  background: #f0f0f0;
-  padding: 10px;
-  border-radius: 6px;
-  max-width: 100%;
-}
-
-/* blinking 애니메이션 */
-@keyframes blinking {
-  0%   { background-color: #4CAF50; }
-  50%  { background-color: #6cc66c; }
-  100% { background-color: #4CAF50; }
-}
-
-.blinking {
-  animation: blinking 1s infinite;
-}
-
-/* 반응형 */
-@media (max-width: 600px) {
-  input[type="text"],
-  input[type="number"],
-  button {
-    font-size: 1em;
-  }
-
-  h1 {
-    font-size: 1.5em;
-  }
-
-  h2 {
-    font-size: 1.2em;
-  }
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
 }
