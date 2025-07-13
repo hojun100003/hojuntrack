@@ -66,7 +66,7 @@ function toggleSections(showEnd) {
   document.getElementById('end-section').style.display = showEnd ? 'block' : 'none';
 }
 
-// 음성 입력 토글
+// 음성 입력 토글 버튼
 function toggleVoiceInput(mode) {
   const btn = document.getElementById(mode === 'start' ? 'start-voice-btn' : 'end-voice-btn');
   if (!isRecording) {
@@ -76,7 +76,7 @@ function toggleVoiceInput(mode) {
     isRecording = true;
     currentMode = mode;
   } else {
-    recognition.stop();
+    recognition.stop();  // 이 시점에만 분석 발생함
     btn.textContent = mode === 'start' ? '🎙️ 학습 시작 음성 입력 개시' : '🎙️ 학습 종료 음성 입력 개시';
     btn.classList.remove('blinking');
     isRecording = false;
@@ -116,7 +116,7 @@ function startVoiceInput(mode) {
   recognition.start();
 }
 
-// 음성 텍스트 파싱
+// 음성 텍스트 분석
 function parseVoiceInput(text, mode) {
   try {
     const match = text.match(/(\S+)\s+(\S+)\s+(\d+)페이지(?:에서)?\s*(\d+)페이지(?:까지)?\s*(\d+)분/);
@@ -145,5 +145,5 @@ function parseVoiceInput(text, mode) {
   }
 }
 
-// 초기 상태 설정
+// 초기화
 window.onload = () => toggleSections(false);
