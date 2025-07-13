@@ -69,7 +69,7 @@ function submitStartStudy() {
     duration
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbxjmEIY4WGpq0nPfPRElkp-FWzpY1UZObrqq960QRZ8p0foE8yYPdZss0wpcyq020s/exec", {
+  fetch("https://script.google.com/macros/s/AKfycby5F89KnDvmGtS-oHk4zBdKKknWx10B9OT3hylZo9Uskq7HfpIJf5wDQAYaADqmZ2c/exec", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
@@ -105,7 +105,7 @@ function submitEndStudy() {
     actualEndPage
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbxjmEIY4WGpq0nPfPRElkp-FWzpY1UZObrqq960QRZ8p0foE8yYPdZss0wpcyq020s/exec", {
+  fetch("https://script.google.com/macros/s/AKfycby5F89KnDvmGtS-oHk4zBdKKknWx10B9OT3hylZo9Uskq7HfpIJf5wDQAYaADqmZ2c/exec", {
     method: "POST",
     body: JSON.stringify(payload),
     headers: {
