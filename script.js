@@ -8,14 +8,13 @@ let finalTranscript = ''; // 음성 인식 결과 저장
 
 // 학습 시작 기록 처리
 function submitStartStudy() {
-  const subject = document.getElementById('subject').value;
   const book = document.getElementById('book').value;
   const startPage = parseInt(document.getElementById('start-page').value);
   const plannedEndPage = parseInt(document.getElementById('planned-end-page').value);
   const duration = parseInt(document.getElementById('duration').value);
 
   const data = {
-    type: 'start', subject, book, startPage, plannedEndPage, duration
+    type: 'start', book, startPage, plannedEndPage, duration
   };
 
   fetch('https://script.google.com/macros/s/AKfycbzN3IiQveleCYrSZfTJyPJDpBJWZbVPwRDRlBrOtZYG7nrKiB3N_TXIcUSP-i-QYUc/exec', {
@@ -25,9 +24,9 @@ function submitStartStudy() {
     .then(response => response.text())
     .then(result => {
       alert('✅ 학습 시작 기록 완료: ' + result);
-      latestStartData = { subject, book, startPage, duration, plannedEndPage };
+      latestStartData = { book, startPage, duration, plannedEndPage };
       updateEndFormWithStartData();
-      toggleSections(true); // 종료 영역 활성화
+      toggleSections(true);
     })
     .catch(error => alert('⚠️ 오류 발생: ' + error));
 }
@@ -48,14 +47,13 @@ function submitEndStudy() {
     .then(response => response.text())
     .then(result => {
       alert('✅ 학습 종료 기록 완료: ' + result);
-      toggleSections(false); // 시작 영역 활성화
+      toggleSections(false);
     })
     .catch(error => alert('⚠️ 오류 발생: ' + error));
 }
 
 // 학습 종료 폼에 학습 시작값 복사
 function updateEndFormWithStartData() {
-  document.getElementById('end-subject').value = latestStartData.subject || '';
   document.getElementById('end-book').value = latestStartData.book || '';
   document.getElementById('end-start-page').value = latestStartData.startPage || '';
   document.getElementById('actual-end-page').value = latestStartData.plannedEndPage || '';
@@ -79,7 +77,7 @@ function toggleVoiceInput(mode) {
     isRecording = true;
     currentMode = mode;
   } else {
-    if (recognition) recognition.stop(); // 음성 종료
+    if (recognition) recognition.stop();
   }
 }
 
@@ -125,19 +123,18 @@ function parseVoiceInput(text, mode) {
   try {
     console.log('🎯 음성 원문:', text);
 
-    const match = text.match(/(\S+)\s+(\S+)\s*(?:교재)?\s*(\d+)\s*(?:페이지|쪽)(?:부터|에서)?\s*(\d+)\s*(?:페이지|쪽)(?:까지)?\s*(\d+)\s*분/);
+    const match = text.match(/(\S+)\s*(?:교재)?\s*(\d+)\s*(?:페이지|쪽)(?:부터|에서)?\s*(\d+)\s*(?:페이지|쪽)(?:까지)?\s*(\d+)\s*분/);
 
     console.log('🧩 정규식 매칭 결과:', match);
 
     if (!match) {
-      alert('⚠️ 음성에서 필요한 정보를 추출하지 못했어요.\n예시: "수학 천재 10페이지에서 20페이지까지 30분"');
+      alert('⚠️ 음성에서 필요한 정보를 추출하지 못했어요.\n예시: "천재 10페이지에서 20페이지까지 30분"');
       return;
     }
 
-    const [_, subject, book, startPage, endPage, duration] = match;
+    const [_, book, startPage, endPage, duration] = match;
 
     if (mode === 'start') {
-      document.getElementById('subject').value = subject;
       document.getElementById('book').value = book;
       document.getElementById('start-page').value = startPage;
       document.getElementById('planned-end-page').value = endPage;
