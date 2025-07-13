@@ -27,7 +27,7 @@ function submitStartStudy() {
       alert('✅ 학습 시작 기록 완료: ' + result);
       latestStartData = { subject, book, startPage, duration, plannedEndPage };
       updateEndFormWithStartData();
-      toggleSections(true);
+      toggleSections(true); // 종료 영역 활성화
     })
     .catch(error => alert('⚠️ 오류 발생: ' + error));
 }
@@ -48,7 +48,7 @@ function submitEndStudy() {
     .then(response => response.text())
     .then(result => {
       alert('✅ 학습 종료 기록 완료: ' + result);
-      toggleSections(false);
+      toggleSections(false); // 시작 영역 활성화
     })
     .catch(error => alert('⚠️ 오류 발생: ' + error));
 }
@@ -79,8 +79,7 @@ function toggleVoiceInput(mode) {
     isRecording = true;
     currentMode = mode;
   } else {
-    recognition.stop();
-    // onend에서 후속 처리
+    if (recognition) recognition.stop(); // 음성 종료
   }
 }
 
