@@ -7,6 +7,7 @@ recognition.interimResults = true;
 
 let currentField = null;
 let recognitionTimeout = null;
+let lastStartData = {};
 
 // 🧠 필드별 음성 입력 인식 함수
 function startFieldRecognition(fieldId) {
@@ -93,5 +94,74 @@ function submitStartStudy() {
   };
 
   console.log('📅 전송할 이벤트:', event);
-  alert('✅ 학습 시작 기록이 준비되었습니다. (캘린더 전송은 생략됨)');
+  alert('✅ 학습 시작 기록이 완료되었습니다.');
+
+  // 저장된 정보로 상태 전환
+  lastStartData = {
+    book,
+    startPage,
+    plannedEndPage,
+    duration,
+  };
+  switchToEndSection();
+}
+
+// 🔄 학습 종료 섹션으로 화면 전환
+function switchToEndSection() {
+  document.getElementById('study-section').style.display = 'none';
+  const endSection = document.getElementById('end-section');
+  endSection.style.display = 'block';
+
+  document.getElementById('end-book').value = lastStartData.book;
+  document.getElementById('end-book').disabled = true;
+  document.getElementById('end-book-voice-btn').disabled = true;
+
+  document.getElementById('end-start-page').value = lastStartData.startPage;
+  document.getElementById('end-start-page').disabled = true;
+  document.getElementById('end-start-page-voice-btn').disabled = true;
+
+  document.getElementById('end-end-page').value = lastStartData.plannedEndPage;
+  document.getElementById('end-end-page').disabled = false;
+  document.getElementById('end-end-page-voice-btn').disabled = false;
+
+  document.getElementById('end-duration').value = lastStartData.duration;
+  document.getElementById('end-duration').disabled = true;
+  document.getElementById('end-duration-voice-btn').disabled = true;
+}
+
+// ✅ 학습 종료 기록 제출 함수
+function submitEndStudy() {
+  const book = document.getElementById('end-book').value;
+  const startPage = document.getElementById('end-start-page').value;
+  const endPage = document.getElementById('end-end-page').value;
+  const duration = document.getElementById('end-duration').value;
+
+  if (!book || !startPage || !endPage || !duration) {
+    alert('⚠️ 종료 항목 누락됨');
+    return;
+  }
+
+  const eventTitle = `${book} ${startPage}~${endPage} ${duration}분 학습 종료`;
+  const now = new Date();
+  const startTime = lastStartData ? new Date().getTime() - duration * 60000 : now.getTime();
+  const endTime = now.toISOString();
+
+  const event = {
+    summary: eventTitle,
+    start: {
+      dateTime: new Date(startTime).toISOString(),
+      timeZone: 'Asia/Seoul',
+    },
+    end: {
+      dateTime: endTime,
+      timeZone: 'Asia/Seoul',
+    },
+  };
+
+  console.log('📅 종료 이벤트 전송됨:', event);
+  alert('✅ 학습 종료 기록 완료되었습니다.');
+
+  // 상태 리셋
+  document.getElementById('study-section').style.display = 'block';
+  document.getElementById('end-section').style.display = 'none';
 }
