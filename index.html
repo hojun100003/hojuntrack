@@ -1,52 +1,95 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>HojunTrack 학습 기록</title>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
 </head>
 <body>
-  <h1>📚 <strong>HojunTrack</strong> 학습 기록</h1>
-  <div id="study-section">
-    <h2>🟢 학습 시작</h2>
-    <form id="study-form">
-      <label>교재명: <input type="text" id="book" required /></label>
-      <button type="button" id="book-voice-btn" onclick="startFieldRecognition('book')">🎙</button><br />
+  <div class="container">
+    <h1><img src="https://img.icons8.com/fluency/48/000000/google-calendar.png"/> <strong>HojunTrack</strong> 학습 기록</h1>
 
-      <label>시작 페이지: <input type="number" id="start-page" required /></label>
-      <button type="button" id="start-page-voice-btn" onclick="startFieldRecognition('start-page')">🎙</button><br />
+    <section id="study-section">
+      <h2>🟢 학습 시작</h2>
 
-      <label>계획 종료 페이지: <input type="number" id="planned-end-page" required /></label>
-      <button type="button" id="planned-end-page-voice-btn" onclick="startFieldRecognition('planned-end-page')">🎙</button><br />
+      <div class="input-group">
+        <label for="book">교재명:</label>
+        <div class="input-with-btn">
+          <input type="text" id="book" />
+          <button onclick="startFieldRecognition('book')">🎙️</button>
+        </div>
+      </div>
 
-      <label>학습 시간 (분): <input type="number" id="duration" required /></label>
-      <button type="button" id="duration-voice-btn" onclick="startFieldRecognition('duration')">🎙</button><br />
+      <div class="input-group">
+        <label for="start-page">시작 페이지:</label>
+        <div class="input-with-btn">
+          <input type="number" id="start-page" />
+          <button onclick="startFieldRecognition('start-page')">🎙️</button>
+        </div>
+      </div>
 
-      <button type="button" onclick="submitStartStudy()">✅ 학습 시작 기록</button>
-    </form>
+      <div class="input-group">
+        <label for="planned-end-page">계획 종료 페이지:</label>
+        <div class="input-with-btn">
+          <input type="number" id="planned-end-page" />
+          <button onclick="startFieldRecognition('planned-end-page')">🎙️</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="duration">학습 시간 (분):</label>
+        <div class="input-with-btn">
+          <input type="number" id="duration" />
+          <button onclick="startFieldRecognition('duration')">🎙️</button>
+        </div>
+      </div>
+
+      <button onclick="submitStartStudy()">✅ 학습 시작 기록</button>
+    </section>
+
+    <section id="end-section" style="display: none;">
+      <h2>🔵 학습 종료</h2>
+
+      <div class="input-group">
+        <label for="end-book">교재명:</label>
+        <div class="input-with-btn">
+          <input type="text" id="end-book" disabled />
+          <button id="end-book-voice-btn" disabled>🎙️</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="end-start-page">시작 페이지:</label>
+        <div class="input-with-btn">
+          <input type="number" id="end-start-page" disabled />
+          <button id="end-start-page-voice-btn" disabled>🎙️</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="end-end-page">실행 종료 페이지:</label>
+        <div class="input-with-btn">
+          <input type="number" id="end-end-page" />
+          <button id="end-end-page-voice-btn" onclick="startFieldRecognition('end-end-page')">🎙️</button>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="end-duration">계획 학습 시간 (분):</label>
+        <div class="input-with-btn">
+          <input type="number" id="end-duration" disabled />
+          <button id="end-duration-voice-btn" disabled>🎙️</button>
+        </div>
+      </div>
+
+      <button onclick="submitEndStudy()">✅ 학습 종료 기록</button>
+    </section>
+
+    <p id="voice-result">🎤 인식된 음성 로그 표시 영역</p>
   </div>
 
-  <div id="end-section" style="display: none;">
-    <h2>🔵 학습 종료 기록</h2>
-    <form id="end-form">
-      <label>교재명: <input type="text" id="end-book" disabled /></label>
-      <button type="button" id="end-book-voice-btn" onclick="startFieldRecognition('end-book')" disabled>🎙</button><br />
-
-      <label>시작 페이지: <input type="number" id="end-start-page" disabled /></label>
-      <button type="button" id="end-start-page-voice-btn" onclick="startFieldRecognition('end-start-page')" disabled>🎙</button><br />
-
-      <label>실행 종료 페이지: <input type="number" id="end-end-page" /></label>
-      <button type="button" id="end-end-page-voice-btn" onclick="startFieldRecognition('end-end-page')">🎙</button><br />
-
-      <label>계획 학습 시간 (분): <input type="number" id="end-duration" disabled /></label>
-      <button type="button" id="end-duration-voice-btn" onclick="startFieldRecognition('end-duration')" disabled>🎙</button><br />
-
-      <button type="button" onclick="submitEndStudy()">✅ 학습 종료 기록</button>
-    </form>
-  </div>
-
-  <p id="voice-result">🎤 인식된 음성 로그 표시 영역</p>
+  <script src="script.js"></script>
 </body>
 </html>
