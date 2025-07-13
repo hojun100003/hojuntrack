@@ -1,99 +1,92 @@
-/* style.css */
-
-/* 전체 배경 및 기본 스타일 */
+/* 전체 폰트 및 배경 */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f7fafd;
-  margin: 0;
-  padding: 2rem;
-}
-
-/* 컨테이너 */
-.container {
-  max-width: 600px;
-  margin: auto;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f6f9fb;
+  padding: 20px;
+  color: #333;
 }
 
 /* 제목 */
 h1 {
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-/* 섹션 제목 */
-h2 {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-  color: #222;
-}
-
-/* 입력 폼 */
-form div {
-  margin-bottom: 1rem;
-}
-
-label {
-  font-weight: bold;
+  color: #1a1a1a;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+h2 {
+  margin-top: 2rem;
+  color: #2a2a2a;
+}
+
+/* 각 form 섹션 */
+form {
+  margin-top: 1rem;
+}
+
+label {
+  font-weight: 500;
+  margin-top: 10px;
+  display: inline-block;
+  width: 200px;
+}
+
+/* 입력 필드 */
 input[type="text"],
 input[type="number"] {
-  flex: 1;
-  padding: 0.5rem;
-  font-size: 1rem;
+  padding: 6px 10px;
+  margin: 4px 0 10px 0;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 4px;
+  width: 250px;
+  font-size: 14px;
 }
 
-/* 음성 버튼 */
-button[type="button"] {
-  background-color: #e0f7fa;
+/* 버튼 공통 */
+button {
+  padding: 6px 10px;
+  margin: 4px;
   border: none;
-  border-radius: 6px;
-  padding: 0.5rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
 }
 
-button[type="button"]:hover {
-  background-color: #b2ebf2;
+button:hover {
+  opacity: 0.9;
+}
+
+/* 🎙 버튼 (음성 입력용) */
+button[id$="voice-btn"] {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 1rem;
+  padding: 4px 8px;
 }
 
 /* 제출 버튼 */
-button[type="submit"],
 button[type="button"]:not([id$="voice-btn"]) {
-  background-color: #4caf50;
+  background-color: #2196F3;
   color: white;
-  font-weight: bold;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 1rem;
+  margin-top: 10px;
 }
 
-button[type="submit"]:hover,
-button[type="button"]:not([id$="voice-btn"]):hover {
-  background-color: #45a049;
+/* 비활성화 상태 */
+input:disabled,
+button:disabled {
+  background-color: #eee;
+  color: #999;
+  cursor: not-allowed;
 }
 
 /* 음성 인식 로그 */
-.voice-log {
-  margin-top: 1rem;
+#voice-result {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #eef2f4;
+  border-left: 4px solid #4CAF50;
   font-style: italic;
   color: #444;
-  background-color: #f0f4f8;
-  padding: 0.6rem;
-  border-left: 4px solid #2196f3;
-  border-radius: 6px;
 }
