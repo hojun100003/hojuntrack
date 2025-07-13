@@ -125,7 +125,9 @@ function startVoiceInput(mode) {
 function parseVoiceInput(text, mode) {
   try {
     console.log('🎯 음성 원문:', text);
-    const match = text.match(/(\S+)\s+(\S+)\s+(\d+)페이지(?:에서)?\s*(\d+)페이지(?:까지)?\s*(\d+)분/);
+
+    const match = text.match(/(\S+)\s+(\S+)\s*(?:교재)?\s*(\d+)\s*(?:페이지|쪽)(?:부터|에서)?\s*(\d+)\s*(?:페이지|쪽)(?:까지)?\s*(\d+)\s*분/);
+
     console.log('🧩 정규식 매칭 결과:', match);
 
     if (!match) {
