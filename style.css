@@ -1,73 +1,99 @@
+/* style.css */
+
+/* 전체 배경 및 기본 스타일 */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f6f9fc;
-  padding: 30px;
+  background-color: #f7fafd;
+  margin: 0;
+  padding: 2rem;
+}
+
+/* 컨테이너 */
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 제목 */
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
   color: #333;
 }
 
-h1 {
-  font-size: 28px;
+/* 섹션 제목 */
+h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
   color: #222;
 }
 
-h2 {
-  font-size: 20px;
-  margin-top: 30px;
-  color: #444;
-}
-
-form {
-  margin-bottom: 20px;
+/* 입력 폼 */
+form div {
+  margin-bottom: 1rem;
 }
 
 label {
-  display: inline-block;
-  margin: 8px 0 4px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 input[type="text"],
 input[type="number"] {
-  width: 100%;
-  max-width: 400px;
-  padding: 8px;
-  margin-bottom: 12px;
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 15px;
 }
 
-button {
-  background-color: #4CAF50;
+/* 음성 버튼 */
+button[type="button"] {
+  background-color: #e0f7fa;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+button[type="button"]:hover {
+  background-color: #b2ebf2;
+}
+
+/* 제출 버튼 */
+button[type="submit"],
+button[type="button"]:not([id$="voice-btn"]) {
+  background-color: #4caf50;
   color: white;
-  padding: 10px 16px;
-  margin: 10px 5px 0 0;
+  font-weight: bold;
+  padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 15px;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
 }
 
-button:hover {
+button[type="submit"]:hover,
+button[type="button"]:not([id$="voice-btn"]):hover {
   background-color: #45a049;
 }
 
-button.blinking {
-  animation: blink 1s infinite;
-  background-color: #ff9933;
-}
-
-@keyframes blink {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-#voice-result {
+/* 음성 인식 로그 */
+.voice-log {
+  margin-top: 1rem;
   font-style: italic;
-  font-size: 14px;
-  color: #555;
-  margin-top: 20px;
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
+  color: #444;
+  background-color: #f0f4f8;
+  padding: 0.6rem;
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
 }
