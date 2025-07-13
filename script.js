@@ -4,8 +4,9 @@ let latestStartData = {}; // 최근 시작 기록 값 저장
 let recognition = null;
 let isRecording = false;
 let currentMode = ''; // 'start' 또는 'end'
+let finalTranscript = ''; // 음성 인식 결과 저장
 
-// 🟢 학습 시작 기록 처리
+// 학습 시작 기록 처리
 function submitStartStudy() {
   const subject = document.getElementById('subject').value;
   const book = document.getElementById('book').value;
@@ -31,7 +32,7 @@ function submitStartStudy() {
     .catch(error => alert('⚠️ 오류 발생: ' + error));
 }
 
-// 🔴 학습 종료 기록 처리
+// 학습 종료 기록 처리
 function submitEndStudy() {
   const actualEndPage = parseInt(document.getElementById('actual-end-page').value);
   const actualDuration = parseInt(document.getElementById('actual-duration').value);
@@ -52,7 +53,7 @@ function submitEndStudy() {
     .catch(error => alert('⚠️ 오류 발생: ' + error));
 }
 
-// ⏩ 학습 종료 폼에 학습 시작값 복사
+// 학습 종료 폼에 학습 시작값 복사
 function updateEndFormWithStartData() {
   document.getElementById('end-subject').value = latestStartData.subject || '';
   document.getElementById('end-book').value = latestStartData.book || '';
@@ -60,16 +61,17 @@ function updateEndFormWithStartData() {
   document.getElementById('actual-duration').value = latestStartData.duration || '';
 }
 
-// 🔀 학습 시작/종료 섹션 전환
+// 학습 시작/종료 섹션 토글
 function toggleSections(showEnd) {
   document.getElementById('study-section').style.display = showEnd ? 'none' : 'block';
   document.getElementById('end-section').style.display = showEnd ? 'block' : 'none';
 }
 
-// 🎙️ 음성 입력 버튼 토글
+// 음성 입력 토글
 function toggleVoiceInput(mode) {
   const btn = document.getElementById(mode === 'start' ? 'start-voice-btn' : 'end-voice-btn');
   if (!isRecording) {
+    finalTranscript = '';
     startVoiceInput(mode);
     btn.textContent = mode === 'start' ? '🛑 학습 시작 음성 입력 마침' : '🛑 학습 종료 음성 입력 마침';
     btn.classList.add('blinking');
@@ -80,16 +82,21 @@ function toggleVoiceInput(mode) {
     btn.textContent = mode === 'start' ? '🎙️ 학습 시작 음성 입력 개시' : '🎙️ 학습 종료 음성 입력 개시';
     btn.classList.remove('blinking');
     isRecording = false;
+
+    if (finalTranscript) {
+      parseVoiceInput(finalTranscript, currentMode);
+    } else {
+      alert('⚠️ 음성을 인식하지 못했습니다.');
+    }
   }
 }
 
-// 🎧 음성 인식 시작
+// 음성 인식 시작
 function startVoiceInput(mode) {
   recognition = new webkitSpeechRecognition();
   recognition.lang = 'ko-KR';
   recognition.interimResults = true;
   recognition.maxAlternatives = 1;
-  let finalTranscript = '';
 
   recognition.onresult = function (event) {
     let transcript = '';
@@ -100,19 +107,6 @@ function startVoiceInput(mode) {
     document.getElementById('voice-result').textContent = '🎙️ 인식된 음성: ' + transcript;
   };
 
-  recognition.onend = function () {
-    const btn = document.getElementById(currentMode === 'start' ? 'start-voice-btn' : 'end-voice-btn');
-    btn.textContent = currentMode === 'start' ? '🎙️ 학습 시작 음성 입력 개시' : '🎙️ 학습 종료 음성 입력 개시';
-    btn.classList.remove('blinking');
-    isRecording = false;
-
-    if (finalTranscript) {
-      parseVoiceInput(finalTranscript, currentMode);
-    } else {
-      alert('⚠️ 음성을 인식하지 못했습니다.');
-    }
-  };
-
   recognition.onerror = function (event) {
     console.error('음성 인식 오류:', event);
     alert('⚠️ 음성 인식 오류 발생: ' + event.error);
@@ -121,7 +115,7 @@ function startVoiceInput(mode) {
   recognition.start();
 }
 
-// 🧠 음성에서 정보 추출 및 자동 제출
+// 음성 텍스트 파싱
 function parseVoiceInput(text, mode) {
   try {
     const match = text.match(/(\S+)\s+(\S+)\s+(\d+)페이지(?:에서)?\s*(\d+)페이지(?:까지)?\s*(\d+)분/);
@@ -150,5 +144,5 @@ function parseVoiceInput(text, mode) {
   }
 }
 
-// 📌 초기 상태: 학습 시작 섹션만 보이도록 설정
+// 초기 상태 설정
 window.onload = () => toggleSections(false);
