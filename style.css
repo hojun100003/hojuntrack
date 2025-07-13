@@ -1,92 +1,57 @@
-/* style.css */
-
-/* 기본 전체 폼 정렬 */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  padding: 2rem;
-  background-color: #f5f7fa;
+  font-family: Arial, sans-serif;
+  background-color: #f8fafd;
   color: #333;
+  padding: 20px;
 }
 
-/* 각 입력 블록 구역 스타일 */
-.section {
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
-/* 구역 제목 */
-.section h2 {
-  margin-top: 0;
-  font-size: 1.3rem;
-  color: #222;
+h2 {
+  font-size: 20px;
+  color: #444;
+  margin-top: 40px;
 }
 
-/* label + input 수직 정렬 */
-.field {
-  margin-bottom: 1rem;
-}
-
-/* label */
-label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: bold;
-}
-
-/* input */
 input[type="text"],
 input[type="number"] {
-  width: 100%;
-  padding: 0.6rem;
-  font-size: 1rem;
+  width: 80%;
+  padding: 8px;
+  margin: 5px 0 15px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
-/* 버튼 */
 button {
-  background-color: #4caf50;
+  padding: 8px 15px;
+  margin-top: 10px;
+  background-color: #48c774;
   color: white;
-  padding: 0.6rem 1.2rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
 }
 
-/* 버튼 hover 효과 */
 button:hover {
-  background-color: #388e3c;
+  background-color: #3db16d;
 }
 
-/* 음성 입력 버튼 색상 다르게 */
-button.voice-btn {
-  background-color: #2196f3;
+button.blinking {
+  animation: blinker 1s linear infinite;
+  background-color: #ff9f43 !important;
 }
 
-button.voice-btn:hover {
-  background-color: #1976d2;
+@keyframes blinker {
+  50% {
+    opacity: 0.4;
+  }
 }
 
-/* 음성 인식 중 깜빡이는 효과 */
-.blinking {
-  animation: blinkingEffect 1s infinite;
-}
-
-@keyframes blinkingEffect {
-  0% { background-color: #d32f2f; }
-  50% { background-color: #ff5252; }
-  100% { background-color: #d32f2f; }
-}
-
-/* 음성 인식 결과 */
 #voice-result {
-  margin-top: 1rem;
+  margin-top: 20px;
   font-style: italic;
   color: #555;
 }
