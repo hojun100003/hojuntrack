@@ -79,15 +79,7 @@ function toggleVoiceInput(mode) {
     currentMode = mode;
   } else {
     recognition.stop();
-    btn.textContent = mode === 'start' ? '🎙️ 학습 시작 음성 입력 개시' : '🎙️ 학습 종료 음성 입력 개시';
-    btn.classList.remove('blinking');
-    isRecording = false;
-
-    if (finalTranscript) {
-      parseVoiceInput(finalTranscript, currentMode);
-    } else {
-      alert('⚠️ 음성을 인식하지 못했습니다.');
-    }
+    // onend에서 후속 처리
   }
 }
 
@@ -102,14 +94,27 @@ function startVoiceInput(mode) {
     let transcript = '';
     for (let i = event.resultIndex; i < event.results.length; ++i) {
       transcript += event.results[i][0].transcript;
-      if (event.results[i].isFinal) finalTranscript = transcript;
     }
+    finalTranscript = transcript;
     document.getElementById('voice-result').textContent = '🎙️ 인식된 음성: ' + transcript;
   };
 
   recognition.onerror = function (event) {
     console.error('음성 인식 오류:', event);
     alert('⚠️ 음성 인식 오류 발생: ' + event.error);
+  };
+
+  recognition.onend = function () {
+    const btn = document.getElementById(currentMode === 'start' ? 'start-voice-btn' : 'end-voice-btn');
+    btn.textContent = currentMode === 'start' ? '🎙️ 학습 시작 음성 입력 개시' : '🎙️ 학습 종료 음성 입력 개시';
+    btn.classList.remove('blinking');
+    isRecording = false;
+
+    if (finalTranscript.trim()) {
+      parseVoiceInput(finalTranscript, currentMode);
+    } else {
+      alert('⚠️ 음성을 인식하지 못했습니다.');
+    }
   };
 
   recognition.start();
